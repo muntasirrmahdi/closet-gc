@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Closet GC | Free Wardrobe Tracker</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&display=swap');
+:root {
+  --bg: #fff;
+  --surface: #f5f5f5;
+  --surface2: #e8e8e8;
+  --border: #d4d4d4;
+  --text: #111;
+  --text2: #444;
+  --text3: #888;
+  --accent: #111;
+  --radius: 0;
+  --gap: 1px;
+  --max-width: 1080px;
+  --tool-width: 960px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  font-size: 17px;
+}
+
+/* Layout Sections */
+.nav-bar {
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  z-index: 1000;
+  padding: 16px 20px;
+}
+.nav-content {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nav-logo {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-decoration: none;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+}
+.nav-links {
+  display: flex;
+  gap: 24px;
+}
+.nav-links a {
+  text-decoration: none;
+  color: var(--text2);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.nav-links a.active {
+  color: var(--text);
+  font-weight: 700;
+}
+
+section {
+  padding: 60px 20px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.hero {
+  text-align: center;
+  padding: 80px 20px;
+}
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  letter-spacing: -1px;
+  text-wrap: balance;
+}
+
+/* Layout Sections */
+.nav-bar {
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  z-index: 1000;
+  padding: 16px 20px;
+}
+.nav-content {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nav-logo {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-decoration: none;
+  color: var(--text);
+}
+.nav-links {
+  display: flex;
+  gap: 24px;
+}
+.nav-links a {
+  text-decoration: none;
+  color: var(--text2);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.nav-links a.active {
+  color: var(--text);
+  font-weight: 700;
+}
+
+section {
+  padding: 80px 20px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.hero {
+  text-align: center;
+  padding: 100px 20px;
+}
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  letter-spacing: -1px;
+  text-wrap: balance;
+}
+.hero p {
+  font-size: 1.25rem;
+  color: var(--text2);
+  max-width: 700px;
+  margin: 0 auto 40px;
+}
+.hero-btns {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.section-title h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.grid-2x2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.card {
+  padding: 32px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+.card-num {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--text3);
+  margin-bottom: 16px;
+  display: block;
+}
+.card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.card p {
+  font-size: 0.95rem;
+  color: var(--text2);
+}
+
+.tool-section {
+  background: var(--surface);
+  max-width: 100%;
+  padding: 60px 20px;
+}
+.tool-wrapper {
+  max-width: var(--tool-width);
+  margin: 0 auto;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.backup-reminder {
+  background: #fff;
+  border: 2px solid var(--text);
+  padding: 16px 20px;
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: -40px -40px 40px -40px;
+  animation: pulseBorder 2s infinite;
+}
+.backup-reminder.show { display: flex; }
+.backup-reminder .close-reminder { cursor: pointer; color: var(--text3); font-weight: 800; font-size: 1.1rem; }
+@keyframes pulseBorder {
+  0%, 100% { border-color: var(--text); }
+  50% { border-color: #555; }
+}
+
+.faq-list {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.faq-item {
+  border-bottom: 1px solid var(--border);
+}
+.faq-item summary {
+  padding: 24px 0;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.faq-item summary::after {
+  content: '+';
+  font-size: 1.2rem;
+  color: var(--text3);
+}
+.faq-item[open] summary::after {
+  content: '\2212';
+}
+.faq-item p {
+  padding-bottom: 24px;
+  color: var(--text2);
+  font-size: 0.95rem;
+}
+
+footer {
+  padding: 48px 20px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  color: var(--text3);
+  font-size: 0.9rem;
+}
+
+/* Existing Tool Styles */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--text);
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.logo-block { display: flex; flex-direction: column; gap: 2px; }
+.logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+.tagline {
+  font-size: 0.75rem;
+  color: var(--text2);
+  letter-spacing: 0.2px;
+}
+
+.welcome-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 24px;
+  margin-bottom: 24px;
+  display: none;
+}
+.welcome-panel.show { display: block; }
+.welcome-panel h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.welcome-panel .subtitle {
+  font-size: 0.85rem;
+  color: var(--text2);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.welcome-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.welcome-step {
+  border: 1px solid var(--border);
+  padding: 16px;
+  background: var(--bg);
+}
+.welcome-step .step-num {
+  font-size: 0.65rem;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.welcome-step .step-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+.welcome-step .step-desc {
+  font-size: 0.78rem;
+  color: var(--text2);
+  line-height: 1.4;
+}
+.welcome-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.stats-bar {
+  display: flex;
+  gap: 24px;
+}
+
+.stat {
+  text-align: right;
+  min-width: 48px;
+}
+.stat .num {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.stat .label {
+  font-size: 0.65rem;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+.tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab {
+  padding: 8px 18px;
+  border: none;
+  background: transparent;
+  color: var(--text2);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.tab:hover { color: var(--text); }
+.tab.active {
+  color: var(--text);
+  border-bottom-color: var(--text);
+  font-weight: 600;
+}
+.tab .badge {
+  background: var(--text);
+  color: var(--bg);
+  padding: 0px 6px;
+  font-size: 0.65rem;
+  margin-left: 6px;
+  font-weight: 700;
+  border-radius: 3px;
+}
+
+.view { display: none; }
+.view.active { display: block; }
+
+.add-form {
+  background: var(--surface);
+  padding: 16px;
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 8px;
+  align-items: end;
+}
+
+.add-form input, .add-form select {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-family: inherit;
+  border-radius: 0;
+}
+.add-form input::placeholder { color: var(--text3); }
+.add-form select { cursor: pointer; appearance: none; }
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.12s;
+  font-family: inherit;
+  border-radius: 0;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-primary { background: var(--text); color: var(--bg); }
+.btn-primary:hover { background: #333; }
+.btn-sm { padding: 6px 14px; font-size: 0.8rem; }
+.btn-ghost {
+  background: transparent;
+  color: var(--text2);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { color: var(--text); border-color: var(--text); }
+.btn-danger { background: var(--text); color: var(--bg); border: 1px solid var(--text); }
+.btn-danger:hover { background: #333; }
+
+.wardrobe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--gap);
+}
+
+.item-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: opacity 0.3s;
+  position: relative;
+}
+.item-card.dead { opacity: 0.35; }
+.item-card.dead:hover { opacity: 0.7; }
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.item-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: capitalize;
+  word-break: break-word;
+}
+
+.item-badges {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.badge-tag {
+  padding: 2px 8px;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid var(--border);
+  color: var(--text2);
+}
+
+.item-stats {
+  display: flex;
+  gap: 16px;
+  font-size: 0.75rem;
+  color: var(--text2);
+}
+.item-stats strong { color: var(--text); font-size: 0.82rem; }
+
+.item-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wear-btn {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid var(--text);
+  background: var(--bg);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.12s;
+  font-family: inherit;
+  border-radius: 0;
+}
+.wear-btn:hover { background: var(--text); color: var(--bg); }
+
+.delete-btn {
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text3);
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.12s;
+}
+.delete-btn:hover { color: var(--text); border-color: var(--border); }
+
+.stats-dashboard {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.stat-card {
+  border: 1px solid var(--border);
+  padding: 24px;
+  background: var(--bg);
+}
+
+.stat-card h3 {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--text2);
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.stat-card .big-num {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* Donut Charts */
+.donut-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 12px 0 8px;
+}
+.donut-svg {
+  width: 130px;
+  height: 130px;
+  transform: rotate(-90deg);
+}
+.donut-bg {
+  fill: none;
+  stroke: var(--surface2);
+  stroke-width: 10;
+}
+.donut-fill {
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.donut-value {
+  position: absolute;
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.donut-sub {
+  font-size: 0.72rem;
+  color: var(--text2);
+  margin-top: 6px;
+}
+.donut-label {
+  font-size: 0.68rem;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+/* Stat card with donut */
+.stat-card-donut {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Category donut */
+.cat-donut-wrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 8px;
+}
+.cat-donut {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+}
+.cat-donut::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--bg);
+}
+.cat-list { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+.cat-list-row { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; }
+.cat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.cat-list-name { text-transform: capitalize; color: var(--text2); flex: 1; }
+.cat-list-count { color: var(--text); font-weight: 600; font-size: 0.78rem; }
+
+/* Enhanced bar styles */
+.cat-bar { height: 10px; flex: 1; background: var(--surface2); overflow: hidden; }
+.cat-bar .fill { transition: width 0.8s cubic-bezier(0.25,0.46,0.45,0.94); }
+.cat-pct { font-size: 0.7rem; color: var(--text2); min-width: 34px; text-align: right; }
+.cat-row:hover .cat-bar .fill { opacity: 0.75; }
+
+/* Pareto bars */
+.pareto-bar { height: 14px; background: var(--surface2); margin-bottom: 6px; overflow: hidden; }
+.pareto-bar .fill { height: 100%; transition: width 0.8s ease; }
+.pareto-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+.pareto-label { width: 86px; font-size: 0.76rem; text-transform: capitalize; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: right; }
+.pareto-pct { font-size: 0.72rem; color: var(--text2); min-width: 34px; font-weight: 600; }
+
+/* Icon animations */
+.stat-icon { margin-bottom: 8px; display: block; }
+.icon-pulse { animation: iconPulse 3.5s ease-in-out infinite; }
+.icon-bounce { transition: transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94); }
+.icon-bounce:hover { transform: translateY(-3px); }
+.icon-spin { transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94); }
+.icon-spin:hover { transform: rotate(15deg); }
+@keyframes iconPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.06); opacity: 0.82; }
+}
+
+.progress-bar {
+  height: 6px;
+  background: var(--surface2);
+  margin: 10px 0;
+  overflow: hidden;
+}
+.progress-bar .fill { height: 100%; transition: width 0.5s; }
+.fill.alive-fill { background: var(--text); }
+
+.staleness-bar {
+  height: 3px;
+  background: var(--surface2);
+  margin-top: 4px;
+  width: 100%;
+}
+.staleness-bar .fill { height: 100%; background: var(--text); opacity: 0.3; }
+
+.donation-candidate {
+  border: 1px solid var(--border);
+  padding: 20px;
+  margin-bottom: 12px;
+  background: var(--bg);
+}
+.donation-candidate .d-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.donation-candidate .d-name { font-weight: 700; text-transform: capitalize; }
+.donation-candidate .d-score { font-weight: 800; font-variant-numeric: tabular-nums; }
+.donation-candidate .d-reason { font-size: 0.85rem; color: var(--text2); margin-bottom: 12px; }
+.donation-candidate .d-bar { height: 4px; background: var(--surface2); margin-bottom: 16px; }
+.donation-candidate .d-fill { height: 100%; background: var(--text); }
+
+.analysis-box {
+  background: var(--surface);
+  padding: 24px;
+  margin-top: 32px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Insight Carousel */
+.insight-carousel { position: relative; min-height: 180px; }
+.insight-card { display: none; padding: 8px 0; text-align: center; }
+.insight-card.active { display: block; }
+.insight-card .insight-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 12px; }
+.insight-card .insight-body { font-size: 1.05rem; line-height: 1.7; margin-bottom: 6px; font-weight: 600; }
+.insight-card .insight-sub { font-size: 0.83rem; color: var(--text2); line-height: 1.5; }
+.carousel-nav { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 18px; }
+.carousel-nav button { 
+  width: 36px; height: 36px; border: 1px solid var(--border); 
+  background: var(--bg); cursor: pointer; font-size: 1.1rem; color: var(--text);
+  display: flex; align-items: center; justify-content: center;
+}
+.carousel-nav button:hover { background: var(--surface); }
+.insight-dots { display: flex; justify-content: center; gap: 6px; margin-top: 12px; }
+.insight-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); cursor: pointer; transition: background 0.2s; }
+.insight-dot.active { background: var(--text); width: 16px; border-radius: 3px; }
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.cat-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.cat-name {
+  width: 90px;
+  font-size: 0.82rem;
+  text-transform: capitalize;
+  color: var(--text2);
+}
+.cat-bar {
+  flex: 1;
+  height: 10px;
+  background: var(--surface2);
+  overflow: hidden;
+}
+.cat-bar .alive-fill { height: 100%; background: var(--text); }
+.cat-count { font-size: 0.78rem; color: var(--text); min-width: 24px; text-align: right; }
+
+.dead-section {
+  background: var(--surface);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.dead-section h3 { margin-bottom: 6px; }
+
+.toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.search-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+.search-bar input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-family: inherit;
+}
+.search-bar select {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.82rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.settings-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 0.82rem;
+  color: var(--text2);
+}
+.settings-row input[type="number"] {
+  width: 64px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.82rem;
+  font-family: inherit;
+}
+.settings-row label { display: flex; align-items: center; gap: 4px; }
+
+.history-list { display: flex; flex-direction: column; gap: 1px; }
+.history-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: var(--surface);
+  font-size: 0.85rem;
+}
+.history-entry .h-name { font-weight: 600; text-transform: capitalize; }
+.history-entry .h-date { color: var(--text2); font-size: 0.78rem; }
+
+.note-input {
+  width: 100%;
+  font-size: 0.78rem;
+  font-family: inherit;
+  color: var(--text2);
+  border: 1px dashed var(--border);
+  padding: 4px 8px;
+  background: transparent;
+  margin-top: 4px;
+}
+.note-input:focus { border-color: var(--text); color: var(--text); outline: none; }
+.note-input::placeholder { color: var(--text3); }
+
+/* Dark mode */
+body.dark { --bg: #111; --surface: #1a1a1a; --surface2: #252525; --border: #333; --text: #eee; --text2: #999; --text3: #555; }
+body.dark .welcome-step { --bg: #1a1a1a; }
+body.dark .wear-btn { --bg: #111; }
+body.dark .card, body.dark .tool-wrapper, body.dark .nav-bar { background: var(--bg); }
+body.dark .tool-section { background: var(--surface); }
+body.dark .cat-donut::after { background: var(--bg); }
+body.dark .donut-bg { stroke: var(--surface2); }
+body.dark .donut-fill { stroke: var(--text); }
+body.dark .stat-card { background: var(--bg); }
+
+/* Tooltips */
+[title] { position: relative; cursor: help; }
+
+.empty-state {
+  text-align: center;
+  padding: 64px 20px;
+  color: var(--text3);
+}
+.empty-state h2 { font-size: 1.1rem; margin-bottom: 6px; color: var(--text2); }
+.empty-state p { font-size: 0.85rem; line-height: 1.5; max-width: 360px; margin: 0 auto; }
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text);
+  color: var(--bg);
+  padding: 12px 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  z-index: 2000;
+  animation: toastIn 0.3s ease-out;
+}
+
+@keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(12px); } }
+
+/* Scroll-triggered fade-in */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } }
+.fade-in { animation: fadeUp 0.5s ease both; }
+/* Stagger item cards */
+.item-card { opacity: 0; transform: translateY(16px) scale(0.97); transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1); }
+.item-card.revealed { opacity: 1; transform: translateY(0) scale(1); }
+/* Count-up pulse */
+@keyframes counted { 
+  0% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+  100% { transform: scale(1); } 
+}
+.big-num.counted { animation: counted 0.5s ease; }
+/* Button ripple */
+@keyframes btnPop { 0% { transform: scale(1); } 50% { transform: scale(0.94); } 100% { transform: scale(1); } }
+.btn:active { animation: btnPop 0.15s ease; }
+/* Stat card entrance */
+@keyframes statSlide { from { opacity: 0; transform: translateY(28px); } }
+.stat-card { animation: statSlide 0.5s ease both; }
+.stat-card:nth-child(1) { animation-delay: 0.05s; }
+.stat-card:nth-child(2) { animation-delay: 0.1s; }
+.stat-card:nth-child(3) { animation-delay: 0.15s; }
+.stat-card:nth-child(4) { animation-delay: 0.2s; }
+.stat-card:nth-child(5) { animation-delay: 0.25s; }
+.stat-card:nth-child(6) { animation-delay: 0.3s; }
+.stat-card:nth-child(7) { animation-delay: 0.35s; }
+/* Insight bar animation */
+@keyframes growBar { from { width: 0; } }
+.insight-bar-fill { animation: growBar 0.8s ease both; }
+/* Glow pulse for donate section */
+@keyframes donateGlow {
+  0%, 100% { box-shadow: 0 0 0 rgba(0,0,0,0); }
+  50% { box-shadow: 0 0 20px rgba(0,0,0,0.08); }
+}
+.donation-candidate { animation: donateGlow 3s infinite; }
+.donation-candidate:nth-child(2) { animation-delay: 0.5s; }
+.donation-candidate:nth-child(3) { animation-delay: 1s; }
+
+@media (max-width: 800px) {
+  .hero h1 { font-size: 2rem; }
+  .hero p { font-size: 1.05rem; }
+  .grid-3, .grid-2x2 { grid-template-columns: 1fr; }
+  .hero-btns { flex-direction: column; align-items: center; }
+  .hero-btns .btn { width: 100%; max-width: 320px; }
+  .add-form { grid-template-columns: 1fr 1fr; }
+  .add-form input { grid-column: 1 / -1; }
+  .stats-bar { justify-content: flex-end; width: 100%; gap: 16px; }
+  .tool-wrapper { padding: 20px; }
+  .toolbar { justify-content: center; }
+  .app-header { flex-direction: column; align-items: flex-start; }
+  section { padding: 48px 16px; }
+  .hero { padding: 60px 16px; }
+  .faq-item summary { font-size: 0.95rem; }
+  .welcome-steps { grid-template-columns: 1fr; }
+  .stats-dashboard { grid-template-columns: 1fr; }
+  .cat-donut-wrap { flex-direction: column; align-items: center; }
+}
+@media (max-width: 480px) {
+  .hero h1 { font-size: 1.7rem; }
+  .section-title h2 { font-size: 1.5rem; }
+  .add-form { grid-template-columns: 1fr; }
+  .add-form button { grid-column: 1 / -1; }
+  .stats-bar { gap: 12px; }
+  .stat .num { font-size: 1.3rem; }
+  .tabs { overflow-x: auto; }
+  .wardrobe-grid { grid-template-columns: 1fr; }
+  .stats-dashboard { grid-template-columns: 1fr; }
+  .tool-wrapper { padding: 12px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav-bar">
+  <div class="nav-content">
+    <a href="#" class="nav-logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:6px" class="icon-pulse"><path d="M12 2a3 3 0 0 0-3 3v1H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-4V5a3 3 0 0 0-3-3Z"/><path d="M9 8v13"/><path d="M15 8v13"/><circle cx="12" cy="4" r="1"/></svg>Closet GC</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>Your Closet Has Clothes You Never Wear.</h1>
+  <p>Track what you wear. Find what just sits. Free. No app needed.</p>
+  <div class="hero-btns">
+    <button class="btn btn-primary" onclick="scrollToTool('demo')">Try the Demo</button>
+    <button class="btn btn-ghost" onclick="if(confirm('This will delete all your data. Continue?')){['closetgc_items','closetgc_wearlog','closetgc_deadDays','closetgc_lastExport','closetgc_dark'].forEach(k=>localStorage.removeItem(k));location.reload();}">Start Fresh</button>
+  </div>
+</section>
+
+<section id="how-it-works">
+  <div class="section-title">
+    <h2>How It Works</h2>
+  </div>
+  <div class="grid-3">
+    <div class="card">
+      <span class="card-num">01</span>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-bounce" style="margin-bottom:12px"><path d="M12 2l3 8h8l-6 4 2 8-7-4-7 4 2-8-6-4h8z"/></svg>
+      <h3>Add Your Clothes</h3>
+      <p>Write down what you own. Name, type, color. Takes 30 seconds each.</p>
+    </div>
+    <div class="card">
+      <span class="card-num">02</span>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-bounce" style="margin-bottom:12px"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <h3>Mark When You Wear</h3>
+      <p>Tap "Wore Today" each time. It builds a simple list for you.</p>
+    </div>
+    <div class="card">
+      <span class="card-num">03</span>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-bounce" style="margin-bottom:12px"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+      <h3>Find What Sits</h3>
+      <p>Items not worn in 90 days show up. Time to clean out.</p>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="section-title">
+    <h2>Everything you need to clean out your closet.</h2>
+  </div>
+  <div class="grid-2x2">
+    <div class="card">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-spin" style="margin-bottom:12px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <h3>See What You Use</h3>
+      <p>Shows how much of your closet you actually wear. Higher is better.</p>
+    </div>
+    <div class="card">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-spin" style="margin-bottom:12px"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <h3>Know Your Types</h3>
+      <p>See what types of clothes you own most. And which you use most.</p>
+    </div>
+    <div class="card">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-spin" style="margin-bottom:12px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <h3>Your History</h3>
+      <p>A simple list of what you wore and when. See your patterns.</p>
+    </div>
+    <div class="card">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-spin" style="margin-bottom:12px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <h3>Find Unused Things</h3>
+      <p>Automatically spots clothes you haven't worn in months.</p>
+    </div>
+  </div>
+</section>
+
+<div class="tool-section" id="tool">
+  <div class="section-title">
+    <h2>What are you not wearing?</h2>
+  </div>
+  <div class="tool-wrapper">
+    <div class="backup-reminder" id="backupReminder">
+      <span>Your data lives only in this browser. <span id="backupMsg">You have never backed up. If you clear your browser, it's gone.</span></span>
+      <div style="display:flex;gap:12px;align-items:center">
+        <button class="btn btn-primary btn-sm" onclick="exportData()">Export Now</button>
+        <span class="close-reminder" onclick="dismissBackupReminder()" title="Remind me in 24 hours">X</span>
+      </div>
+    </div>
+    <div class="app">
+      <header class="app-header">
+        <div class="logo-block">
+          <div class="logo">Closet GC</div>
+          <div class="tagline">Track what you wear. Find what you don't.</div>
+        </div>
+        <div class="stats-bar">
+          <div class="stat" title="Total items in your closet."><div class="num" id="statTotal">0</div><div class="label">Total</div></div>
+          <div class="stat" title="Items you've worn recently."><div class="num" id="statAlive">0</div><div class="label">Active</div></div>
+          <div class="stat" title="Items sitting unused for a long time."><div class="num" id="statDead">0</div><div class="label">Unused</div></div>
+          <div class="stat" title="Total times you marked an item as worn."><div class="num" id="statWears">0</div><div class="label">Wears</div></div>
+        </div>
+      </header>
+
+      <!-- First-visit welcome -->
+      <div class="welcome-panel show" id="welcomePanel">
+        <h2>Some of your clothes just sit there.</h2>
+        <p class="subtitle">Maybe the tags are still on. Maybe they're buried in the back. Closet GC helps you track what you wear and shows you what you don't. Simple as that.</p>
+        <div class="welcome-steps">
+          <div class="welcome-step">
+            <div class="step-num">Step 1</div>
+            <div class="step-title">Write Down Your Clothes</div>
+            <div class="step-desc">Name each item, pick a type and color. Takes half a minute each.</div>
+          </div>
+          <div class="welcome-step">
+            <div class="step-num">Step 2</div>
+            <div class="step-title">Tap When You Wear</div>
+            <div class="step-desc">Hit "Wore Today" each time you wear something. Builds a simple log.</div>
+          </div>
+          <div class="welcome-step">
+            <div class="step-num">Step 3</div>
+            <div class="step-title">See What Sits Unused</div>
+            <div class="step-desc">Items not worn in 90 days show up. Time to donate, sell, or toss.</div>
+          </div>
+        </div>
+        <div class="welcome-actions">
+          <button class="btn btn-primary btn-sm" onclick="loadDemo(); document.getElementById('welcomePanel').classList.remove('show')">Load Demo</button>
+          <button class="btn btn-ghost btn-sm" onclick="items=[];wearLog=[];save();document.getElementById('welcomePanel').classList.remove('show');refreshAll()">Start Empty</button>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="wardrobe" title="See all your clothes. Filter and sort them.">All<span class="badge" id="tabCount">0</span></button>
+        <button class="tab" data-tab="dead" title="Clothes you haven't worn in a long time.">Unused<span class="badge" id="deadCount">0</span></button>
+        <button class="tab" data-tab="donate" title="Tips on what to donate based on your usage.">Donate<span class="badge" id="donateCount">0</span></button>
+        <button class="tab" data-tab="history" title="A list of everything you've worn and when.">History</button>
+        <button class="tab" data-tab="stats" title="Charts and numbers about your closet.">Stats</button>
+      </div>
+
+      <div class="toolbar">
+        <button class="btn btn-sm btn-ghost" onclick="exportData()" title="Save your data as a file to back it up.">Export</button>
+        <button class="btn btn-sm btn-ghost" onclick="document.getElementById('importFile').click()" title="Load data from a file you saved earlier.">Import</button>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+        <button class="btn btn-sm btn-ghost" id="demoBtn" onclick="loadDemo()" title="Fill with sample items to see how it works.">Load Demo</button>
+        <button class="btn btn-sm btn-ghost" id="darkToggle" onclick="toggleDark()" title="Switch light or dark background.">Dark</button>
+        <span style="flex:1"></span>
+        <button class="btn btn-sm btn-ghost" onclick="undoLastWear()" title="Undo your last 'Wore Today' tap.">Undo</button>
+        <button class="btn btn-sm btn-danger" onclick="purgeDead()" title="Remove all unused items at once. Can't undo.">Remove Unused</button>
+      </div>
+
+      <div class="view active" id="view-wardrobe">
+        <div class="search-bar">
+          <input type="text" id="searchInput" placeholder="Search by name, type, or color..." oninput="refreshWardrobe()" title="Filter items by name, category, or color.">
+          <select id="sortBy" onchange="refreshWardrobe()" title="How to order your items.">
+            <option value="recent">Most Recent</option>
+            <option value="most-worn">Most Worn</option>
+            <option value="least-worn">Least Worn</option>
+            <option value="name">Name A-Z</option>
+          </select>
+        </div>
+
+        <div class="add-form">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <input type="text" id="itemName" placeholder="Item name (e.g. blue hoodie)" maxlength="100" title="What's the item called? Be specific.">
+            <div style="display:flex;gap:4px">
+              <input type="text" id="itemNote" placeholder="Note (optional)" maxlength="200" class="note-input" style="flex:2" title="Optional: brand, size, where you bought it.">
+              <input type="text" id="itemPrice" placeholder="Price in ৳ (optional)" class="note-input" style="flex:1" title="Optional: what you paid in taka. Used to calculate cost per wear.">
+            </div>
+          </div>
+          <select id="itemCategory" title="Group items by type for stats.">
+            <option value="tops">Tops</option><option value="bottoms">Bottoms</option>
+            <option value="outerwear">Outerwear</option><option value="shoes">Shoes</option>
+            <option value="accessories">Accessories</option><option value="formal">Formal</option><option value="other">Other</option>
+          </select>
+          <select id="itemColor" title="Optional: helps spot color patterns.">
+            <option value="">Color</option>
+            <option value="black">Black</option><option value="white">White</option>
+            <option value="grey">Grey</option><option value="blue">Blue</option><option value="red">Red</option>
+            <option value="green">Green</option><option value="brown">Brown</option><option value="navy">Navy</option><option value="beige">Beige</option><option value="pink">Pink</option><option value="yellow">Yellow</option><option value="orange">Orange</option><option value="purple">Purple</option>
+          </select>
+          <button class="btn btn-primary btn-sm" onclick="addItem()" title="Add this item to your tracker.">Add</button>
+        </div>
+        <div class="settings-row">
+          <label title="How many days without wearing before marked unused.">Mark unused after <input type="number" id="deadDays" value="90" min="7" max="365" onchange="updateDeadDays()"> days</label>
+          <span style="color:var(--text3)">|</span>
+          <span id="lastWornInfo" title="Quick look at how long since your oldest wear." style="font-size:0.78rem"></span>
+        </div>
+        <div class="wardrobe-grid" id="wardrobeGrid"></div>
+        <div class="empty-state" id="emptyState"><h2>Your closet is empty</h2><p>Add your first item above. Name it, pick a type, and you're ready.</p></div>
+      </div>
+
+      <div class="view" id="view-dead">
+        <div class="dead-section" id="deadContent"></div>
+        <div class="wardrobe-grid" id="deadGrid"></div>
+        <div class="empty-state" id="noDeadState"><h2>Nothing sitting unused</h2><p>Everything has been worn recently. You're using what you own.</p></div>
+      </div>
+
+      <div class="view" id="view-donate">
+        <div id="donateCandidates"></div>
+        <div class="analysis-box" id="wardrobeAnalysis"></div>
+        <div class="empty-state" id="noDonateState"><h2>Keep tracking</h2><p>You need at least 30 total wears before tips start showing up.</p></div>
+      </div>
+
+      <div class="view" id="view-history">
+        <div class="history-list" id="historyList"></div>
+        <div class="empty-state" id="noHistoryState"><h2>No history yet</h2><p>Tap "Wore Today" on any item to start your log.</p></div>
+      </div>
+
+      <div class="view" id="view-stats">
+        <div class="stats-dashboard" id="statsDashboard"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="faq">
+  <div class="section-title">
+    <h2>Questions You Might Have</h2>
+  </div>
+  <div class="faq-list">
+    <details class="faq-item">
+      <summary>What is Closet GC?</summary>
+      <p>Closet GC is a free tool that shows you which clothes you actually wear. Just like your phone has a trash bin for old files, this tool finds clothes in your closet that you never use. You add your items, tap when you wear them, and the tool shows what's been sitting there for months. No download. No account. Just open it and start.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Is it really free?</summary>
+      <p>Yes, totally free. No hidden costs. No ads. No "premium" version. Your data stays on your device -- we have nothing to sell you.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Where does my data go?</summary>
+      <p>Nowhere. It stays on your device inside your browser. We can't see your clothes, your notes, or anything you add. But this also means: if you clear your browser data, your closet goes with it. Use the Export button to save a backup file.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Can I back up my data?</summary>
+      <p>Yes. Tap Export to save your closet as a file. Email it to yourself, keep it in Google Drive, or use it to move your data to another device. Tap Import to bring it back.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What counts as unused?</summary>
+      <p>An item is "unused" when you haven't worn it in a while. The default is 90 days -- about 3 months. You can change this from 7 days up to a full year. Brand new items get time before we start counting.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Do I need to sign up?</summary>
+      <p>No. No email. No password. No account. Open the page and start. Just remember: if you lose your data, we can't get it back. That's why we keep reminding you to export.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Does this use AI or send my data anywhere?</summary>
+      <p>No AI. No servers. No internet needed after the first load. It's all simple math -- the tool checks the date of your last wear and decides if it's been too long. Your data stays private because there's nowhere for it to go. You can even use it without internet.</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <p>Closet GC &mdash; A free tool for smarter closets &copy; 2026</p>
+</footer>
+
+<script>
+let DEAD_DAYS = 90;
+let items = [];
+let wearLog = [];
+let lastWearUndo = null;
+let lastExport = null;
+let reminderDismissed = 0;
+
+function load() {
+  try { items = JSON.parse(localStorage.getItem('closetgc_items') || '[]'); } catch(e) { items = []; }
+  try { wearLog = JSON.parse(localStorage.getItem('closetgc_wearlog') || '[]'); } catch(e) { wearLog = []; }
+  try { DEAD_DAYS = parseInt(localStorage.getItem('closetgc_deadDays')) || 90; } catch(e) { DEAD_DAYS = 90; }
+  try { lastExport = localStorage.getItem('closetgc_lastExport'); } catch(e) { lastExport = null; }
+}
+function save() {
+  localStorage.setItem('closetgc_items', JSON.stringify(items));
+  localStorage.setItem('closetgc_wearlog', JSON.stringify(wearLog));
+  localStorage.setItem('closetgc_deadDays', DEAD_DAYS);
+  if (lastExport) localStorage.setItem('closetgc_lastExport', lastExport);
+}
+function today() { return new Date().toISOString().split('T')[0]; }
+function daysAgo(d) { if (!d) return Infinity; return Math.floor((new Date() - new Date(d)) / 86400000); }
+
+function stalenessScore(i) {
+  if (i.wear_count === 0 && items.length > 1) return null;
+  if (!i.last_worn) return 100;
+  return Math.min(100, Math.round((daysAgo(i.last_worn) / DEAD_DAYS) * 100));
+}
+
+function freshnessScore(i) {
+  if (!i.last_worn) return null;
+  const t = daysAgo(i.last_worn);
+  const f = Math.exp(-t * Math.log(2) / DEAD_DAYS);
+  return Math.round(f * 100);
+}
+
+function isDead(i) { 
+  const score = stalenessScore(i);
+  return score !== null && score >= 100;
+}
+
+function toast(msg) {
+  const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg;
+  document.body.appendChild(el); setTimeout(() => el.remove(), 2500);
+}
+
+function updateDeadDays() {
+  const v = parseInt(document.getElementById('deadDays').value) || 90;
+  DEAD_DAYS = Math.max(7, Math.min(365, v));
+  document.getElementById('deadDays').value = DEAD_DAYS;
+  save(); refreshAll();
+}
+
+function addItem() {
+  const name = document.getElementById('itemName').value.trim();
+  if (!name) return toast('Enter a name');
+  if (items.find(i => i.name === name.toLowerCase())) return toast('Already exists');
+  const note = document.getElementById('itemNote').value.trim();
+  const priceRaw = document.getElementById('itemPrice').value.trim();
+  items.push({
+    id: Date.now(), name: name.toLowerCase(),
+    category: document.getElementById('itemCategory').value,
+    color: document.getElementById('itemColor').value,
+    note: note || null,
+    price: priceRaw || null,
+    added_date: today(), last_worn: null, wear_count: 0
+  });
+  save(); 
+  document.getElementById('itemName').value = ''; 
+  document.getElementById('itemNote').value = '';
+  document.getElementById('itemPrice').value = '';
+  document.getElementById('itemName').focus();
+  toast('Added: ' + name); refreshAll();
+}
+
+function getPrice(item) {
+  if (!item.price) return null;
+  if (typeof item.price === 'number') return item.price;
+  const n = parseFloat(item.price.replace(/[^0-9.]/g, ''));
+  return isNaN(n) ? null : n;
+}
+
+function formatPrice(item, val) {
+  if (!item.price) return val;
+  const symbol = item.price.replace(/[0-9. ]/g, '');
+  return symbol + val;
+}
+
+function wearItem(id) {
+  const item = items.find(i => i.id === id); if (!item) return;
+  item.last_worn = today(); item.wear_count++;
+  wearLog.push({ item_id: id, item_name: item.name, worn_date: today() }); lastWearUndo = id;
+  save(); toast('Worn: ' + item.name + ' (' + item.wear_count + 'x)'); refreshAll();
+}
+
+function deleteItem(id) {
+  const item = items.find(i => i.id === id); if (!item) return;
+  if (!confirm('Remove "' + item.name + '" from your closet? This cannot be undone.')) return;
+  items = items.filter(i => i.id !== id);
+  wearLog = wearLog.filter(w => w.item_id !== id);
+  save(); toast('Removed: ' + item.name); refreshAll();
+}
+
+function undoLastWear() {
+  if (!lastWearUndo) return toast('Nothing to undo. Wear an item first.');
+  const id = lastWearUndo; const item = items.find(i => i.id === id);
+  if (!item) { lastWearUndo = null; return; }
+  item.wear_count = Math.max(0, item.wear_count - 1);
+  const idx = wearLog.map(w => w.item_id).lastIndexOf(id);
+  if (idx >= 0) wearLog.splice(idx, 1);
+  const prev = [...wearLog].reverse().find(w => w.item_id === id);
+  item.last_worn = prev ? prev.worn_date : null;
+  lastWearUndo = null; save();
+  toast('Undid last wear: ' + item.name); refreshAll();
+}
+
+function purgeDead() {
+  const dead = items.filter(isDead);
+  if (dead.length === 0) return toast('No unused items. Everything is being worn.');
+  const names = dead.map(i => i.name).join(', ');
+  if (!confirm('Remove ' + dead.length + ' unused items?\n\n' + names + '\n\nThese haven\'t been worn in ' + DEAD_DAYS + '+ days. This cannot be undone.')) return;
+  items = items.filter(i => !isDead(i)); save();
+  toast('Removed ' + dead.length + ' items'); refreshAll();
+}
+
+function exportData() {
+  const blob = new Blob([JSON.stringify({ items, wearLog, DEAD_DAYS }, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'closetgc-' + today() + '.json'; a.click(); URL.revokeObjectURL(a.href);
+  lastExport = today();
+  save();
+  checkBackupReminder();
+  toast('Saved to file');
+}
+
+function checkBackupReminder() {
+  const reminder = document.getElementById('backupReminder');
+  if (reminderDismissed && (Date.now() - reminderDismissed) < 86400000) {
+    reminder.classList.remove('show');
+    return;
+  }
+  reminderDismissed = 0;
+  const days = lastExport ? daysAgo(lastExport) : 999;
+  if (days > 7 && items.length > 3) {
+    const msg = document.getElementById('backupMsg');
+    if (days >= 999) msg.textContent = 'You have never backed up. If you clear your browser, it\'s gone.';
+    else msg.textContent = 'Your last backup was ' + days + ' day(s) ago. If you clear your browser, it\'s gone.';
+    reminder.classList.add('show');
+  } else {
+    reminder.classList.remove('show');
+  }
+}
+
+function dismissBackupReminder() {
+  reminderDismissed = Date.now();
+  document.getElementById('backupReminder').classList.remove('show');
+}
+
+function importData(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!data.items || !Array.isArray(data.items)) throw new Error();
+      if (!confirm('Import ' + data.items.length + ' items? This will replace your current data.')) return;
+      items = data.items; wearLog = data.wearLog || [];
+      if (data.DEAD_DAYS) { DEAD_DAYS = data.DEAD_DAYS; document.getElementById('deadDays').value = DEAD_DAYS; }
+      save(); toast('Imported ' + data.items.length + ' items'); refreshAll();
+    } catch(_) { toast('Could not read file. Make sure it is a valid Closet GC export.'); }
+  };
+  reader.readAsText(file); e.target.value = '';
+}
+
+function renderItem(item) {
+  const dead = isDead(item);
+  const lastWorn = item.last_worn ? (daysAgo(item.last_worn) === 0 ? 'Today' : daysAgo(item.last_worn) + 'd ago') : 'Never';
+  const noteHtml = item.note ? '<div class="note-input" style="border:none;padding:0;margin-top:2px;cursor:default" title="Your note about this item.">' + item.note + '</div>' : '';
+  
+  const priceVal = getPrice(item);
+  const cpw = (priceVal && item.wear_count > 0) ? (priceVal / item.wear_count).toFixed(2) : null;
+  const cpwHtml = cpw ? '<div title="Cost per wear: price divided by wears.">CPW: <strong>' + formatPrice(item, cpw) + '</strong>/wear</div>' : '';
+  
+  const sScore = stalenessScore(item);
+  const stalenessHtml = sScore !== null ? '<div class="staleness-bar" title="How unused this is: ' + sScore + '/100. Higher = been sitting longer."><div class="fill" style="width:' + sScore + '%; opacity:' + (1 - (sScore/150)) + '"></div></div>' : '';
+  
+  const fScore = freshnessScore(item);
+  const freshnessHtml = fScore !== null ? '<div title="How fresh this is. Drops over time since last wear.">Fresh: <strong>' + fScore + '</strong></div>' : '<div title="Never worn">Fresh: <strong>--</strong></div>';
+
+  return '<div class="item-card ' + (dead ? 'dead' : '') + '" data-id="' + item.id + '">'
+    + '<div class="item-header">'
+    + '<div style="flex:1"><div class="item-name" title="' + item.name + (item.note ? ' - ' + item.note : '') + '">' + item.name + '</div>'
+    + stalenessHtml + '</div>'
+    + '<div class="item-badges">'
+    + '<span class="badge-tag" title="Type: ' + item.category + '">' + item.category + '</span>'
+    + (item.color ? '<span class="badge-tag" title="Color: ' + item.color + '">' + item.color + '</span>' : '')
+    + (dead ? '<span class="badge-tag" title="Not worn in ' + DEAD_DAYS + '+ days.">unused</span>' : '')
+    + '</div></div>'
+    + '<div class="item-stats">'
+    + '<div title="Worn ' + item.wear_count + ' times."><strong>' + item.wear_count + '</strong> wears</div>'
+    + '<div title="' + (item.last_worn ? 'Last worn on ' + item.last_worn : 'Never worn') + '">last <strong>' + lastWorn + '</strong></div>'
+    + '</div>'
+    + '<div class="item-stats" style="margin-top:-4px">'
+    + freshnessHtml
+    + cpwHtml
+    + '</div>'
+    + noteHtml
+    + '<div class="item-actions">'
+    + '<button class="wear-btn" onclick="wearItem(' + item.id + ')" title="Tap when you wear this today. Builds your log.">Wore Today</button>'
+    + '<button class="delete-btn" onclick="deleteItem(' + item.id + ')" title="Remove this from your closet.">x</button>'
+    + '</div></div>';
+}
+
+function refreshWardrobe() {
+  const q = (document.getElementById('searchInput').value || '').toLowerCase();
+  const sort = document.getElementById('sortBy').value;
+  let filtered = items.slice();
+  if (q) {
+    filtered = filtered.filter(i => i.name.includes(q) || i.category.includes(q) || (i.color && i.color.includes(q)) || (i.note && i.note.toLowerCase().includes(q)));
+  }
+  if (sort === 'most-worn') filtered.sort((a,b) => b.wear_count - a.wear_count);
+  else if (sort === 'least-worn') filtered.sort((a,b) => a.wear_count - b.wear_count);
+  else if (sort === 'recent') filtered.sort((a,b) => b.id - a.id);
+  else if (sort === 'name') filtered.sort((a,b) => a.name.localeCompare(b.name));
+  document.getElementById('wardrobeGrid').innerHTML = filtered.map(renderItem).join('');
+  document.getElementById('emptyState').style.display = items.length === 0 ? 'block' : 'none';
+}
+function refreshDead() {
+  const dead = items.filter(isDead).sort((a,b) => (stalenessScore(b) || 0) - (stalenessScore(a) || 0));
+  document.getElementById('deadContent').innerHTML = dead.length > 0 ? '<h3>' + dead.length + ' Unused Items</h3><p style="color:var(--text2)">Not worn in ' + DEAD_DAYS + '+ days. These are just taking up space.</p>' : '';
+  document.getElementById('deadGrid').innerHTML = dead.map(renderItem).join('');
+  document.getElementById('noDeadState').style.display = dead.length === 0 ? 'block' : 'none';
+}
+function refreshHistory() {
+  const log = [...wearLog].reverse().slice(0, 100);
+  document.getElementById('historyList').innerHTML = log.length > 0 ? log.map(w => {
+    const item = items.find(i => i.id === w.item_id);
+    const name = item ? item.name : (w.item_name || '(removed item)');
+    return '<div class="history-entry" title="You wore this on ' + w.worn_date + '">'
+      + '<span class="h-name">' + name + '</span>'
+      + '<span class="h-date">' + w.worn_date + ' (' + daysAgo(w.worn_date) + 'd ago)</span>'
+      + '</div>';
+  }).join('') : '';
+  document.getElementById('noHistoryState').style.display = log.length === 0 ? 'block' : 'none';
+}
+
+/* --- SVG DONUT HELPERS --- */
+function donutSVG(pct, size) {
+  // size = outer SVG size, ring radius = (size/2) - 7
+  const r = (size / 2) - 7;
+  const circ = 2 * Math.PI * r;
+  const offset = circ * (1 - pct / 100);
+  const cx = size / 2;
+  const cy = size / 2;
+  return '<div class="donut-wrap">'
+    + '<svg viewBox="0 0 ' + size + ' ' + size + '" class="donut-svg">'
+    + '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" class="donut-bg"/>'
+    + '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" class="donut-fill" stroke-dasharray="' + circ.toFixed(2) + '" stroke-dashoffset="' + offset.toFixed(2) + '"/>'
+    + '</svg>'
+    + '<div class="donut-value">' + pct + '%</div>'
+    + '</div>';
+}
+
+function entropyDonutSVG(score) {
+  const size = 130;
+  const r = (size / 2) - 7;
+  const circ = 2 * Math.PI * r;
+  const offset = circ * (1 - score / 100);
+  const cx = size / 2;
+  const cy = size / 2;
+  return '<div class="donut-wrap">'
+    + '<svg viewBox="0 0 ' + size + ' ' + size + '" class="donut-svg">'
+    + '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" class="donut-bg"/>'
+    + '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" class="donut-fill" stroke-dasharray="' + circ.toFixed(2) + '" stroke-dashoffset="' + offset.toFixed(2) + '"/>'
+    + '</svg>'
+    + '<div class="donut-value">' + score + '</div>'
+    + '</div>';
+}
+
+function catDonutHTML(cats) {
+  // Build conic-gradient from category data
+  const shades = ['#111', '#2a2a2a', '#444', '#5a5a5a', '#777', '#999', '#b0b0b0'];
+  const entries = Object.entries(cats).sort((a,b) => b[1].t - a[1].t);
+  const total = entries.reduce((s, e) => s + e[1].t, 0);
+  let deg = 0;
+  const segments = [];
+  const listItems = [];
+  entries.forEach(([name, data], i) => {
+    const pct = total > 0 ? (data.t / total) * 360 : 0;
+    segments.push(shades[i % shades.length] + ' ' + deg.toFixed(1) + 'deg ' + (deg + pct).toFixed(1) + 'deg');
+    listItems.push('<div class="cat-list-row"><span class="cat-dot" style="background:' + shades[i % shades.length] + '"></span><span class="cat-list-name">' + name + '</span><span class="cat-list-count">' + data.t + '</span></div>');
+    deg += pct;
+  });
+  return '<div class="cat-donut-wrap">'
+    + '<div class="cat-donut" style="background: conic-gradient(' + segments.join(',') + ')"></div>'
+    + '<div class="cat-list">' + listItems.join('') + '</div>'
+    + '</div>';
+}
+
+function refreshStats() {
+  const dash = document.getElementById('statsDashboard');
+  const total = items.length;
+  const alive = items.filter(i => !isDead(i)).length;
+  const wears = items.reduce((s,i) => s + i.wear_count, 0);
+  const usagePct = total > 0 ? Math.round(alive / total * 100) : 0;
+
+  // Category data
+  const cats = {};
+  items.forEach(i => { if (!cats[i.category]) cats[i.category] = { t:0, d:0 }; cats[i.category].t++; if (isDead(i)) cats[i.category].d++; });
+
+  // Entropy
+  const wornItems = items.filter(i => i.wear_count > 0);
+  let entropy = 0;
+  let entLabel = "Start tracking to see this";
+  if (wears > 0 && wornItems.length > 0) {
+    const h = -wornItems.reduce((s, i) => {
+      const p = i.wear_count / wears;
+      return s + (p * Math.log(p));
+    }, 0);
+    const maxH = Math.log(wornItems.length);
+    const normH = maxH > 0 ? (h / maxH) * 100 : 0;
+    entropy = Math.round(normH);
+    if (entropy <= 30) entLabel = "You wear mostly the same things.";
+    else if (entropy <= 60) entLabel = "Pretty good mix.";
+    else if (entropy <= 85) entLabel = "You mix it up well.";
+    else entLabel = "Everything gets used!";
+  }
+
+  // Pareto
+  const sortedByWear = [...items].sort((a,b) => b.wear_count - a.wear_count);
+  const top3 = sortedByWear.slice(0, 3);
+  const top3Wears = top3.reduce((s, i) => s + i.wear_count, 0);
+  const top3Pct = wears > 0 ? Math.round((top3Wears / wears) * 100) : 0;
+  const paretoBars = top3.length > 0 && wears > 0 ? top3.map((i, idx) => {
+    const p = Math.round((i.wear_count / wears) * 100);
+    return '<div class="pareto-row"><span class="pareto-label">' + i.name + '</span><div class="pareto-bar" style="flex:1"><div class="fill alive-fill insight-bar-fill" style="width:' + p + '%"></div></div><span class="pareto-pct">' + p + '%</span></div>';
+  }).join('') : '<div style="font-size:0.78rem;color:var(--text3)">No wears yet.</div>';
+
+  // CPW
+  const itemsWithPrice = items.filter(i => getPrice(i) && i.wear_count > 0);
+  const topCPW = itemsWithPrice.sort((a, b) => (getPrice(b) / b.wear_count) - (getPrice(a) / a.wear_count)).slice(0, 3);
+
+  // Build all stat cards
+  let html = '';
+
+  // Usage Score - donut
+  html += '<div class="stat-card stat-card-donut">'
+    + '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon icon-pulse"><path d="M21 12a9 9 0 11-6.219-8.559"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 01-15 5.499"/></svg>'
+    + '<h3>How Much You Wear</h3>'
+    + (total > 0 ? donutSVG(usagePct, 130) : '<div class="big-num" style="font-size:2.5rem">--</div>')
+    + '<div class="donut-sub">' + alive + ' out of ' + total + ' items used</div>'
+    + '<div class="donut-label">higher is better</div>'
+    + '</div>';
+
+  // Total Wears
+  html += '<div class="stat-card stat-card-donut">'
+    + '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon icon-bounce"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>'
+    + '<h3>Total Times Worn</h3>'
+    + '<div class="big-num">' + wears + '</div>'
+    + '<div class="donut-sub">across all your items</div>'
+    + '<div class="donut-label">keep tracking</div>'
+    + '</div>';
+
+  // Entropy Score - donut
+  html += '<div class="stat-card stat-card-donut">'
+    + '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon icon-spin"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>'
+    + '<h3>Variety Score</h3>'
+    + (wears > 0 ? entropyDonutSVG(entropy) : '<div class="big-num" style="font-size:2.5rem">--</div>')
+    + '<div class="donut-sub">' + entLabel + '</div>'
+    + '<div class="donut-label">out of 100</div>'
+    + '</div>';
+
+  // Category Breakdown - donut + list
+  html += '<div class="stat-card">'
+    + '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon icon-pulse"><path d="M21.21 15.89A10 10 0 118 2.83"/><path d="M22 12A10 10 0 0012 2v10z"/></svg>'
+    + '<h3>By Type</h3>'
+    + (total > 0 ? catDonutHTML(cats) : '<div style="font-size:0.78rem;color:var(--text3)">Add items to see this.</div>')
+    + '</div>';
+
+  // Pareto Favorites
+  html += '<div class="stat-card" style="grid-column:1/-1">'
+    + '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon icon-bounce"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'
+    + '<h3>Your Favorites</h3>'
+    + (wears > 0 ? '<div style="font-size:1.1rem;font-weight:700;margin-bottom:12px">Your top 3 get <strong>' + top3Pct + '%</strong> of your wears</div>' + paretoBars : '<div style="font-size:0.78rem;color:var(--text3)">Start tracking to see your favorites.</div>')
+    + '</div>';
+
+  // CPW
+  html += '<div class="stat-card" style="grid-column:1/-1">'
+    + '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stat-icon icon-spin"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>'
+    + '<h3>Costs Per Wear</h3>'
+    + (topCPW.length > 0 ? '<div style="font-size:0.85rem;color:var(--text2)">' + topCPW.map((i, idx) => {
+        const cpw = (getPrice(i) / i.wear_count).toFixed(2);
+        return (idx + 1) + '. <strong>' + i.name + '</strong>: ' + formatPrice(i, cpw) + ' each use';
+      }).join('<br>') + '</div>' : '<div style="font-size:0.78rem;color:var(--text3)">Add prices to see which items cost the most per use.</div>')
+    + '</div>';
+
+  dash.innerHTML = html;
+
+  document.getElementById('lastWornInfo').textContent = items.length > 0 ? items.map(i => i.last_worn ? daysAgo(i.last_worn) : 999).sort((a,b) => a-b)[0] + 'd since oldest wear' : '';
+}
+
+function refreshHeader() {
+  const total = items.length;
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statAlive').textContent = items.filter(i => !isDead(i)).length;
+  document.getElementById('statDead').textContent = items.filter(isDead).length;
+  const wears = items.reduce((s,i) => s + i.wear_count, 0);
+  document.getElementById('statWears').textContent = wears;
+  document.getElementById('tabCount').textContent = total;
+  document.getElementById('deadCount').textContent = items.filter(isDead).length;
+  
+  const donateCandidates = wears >= 30 ? items.map(i => ({ item: i, score: donationScore(i) })).filter(x => x.score > 50) : [];
+  document.getElementById('donateCount').textContent = donateCandidates.length;
+}
+
+function donationScore(item) {
+  const sScore = stalenessScore(item) || 0;
+  const stalenessPenalty = sScore / 100;
+  
+  const maxWears = Math.max(...items.map(i => i.wear_count), 1);
+  const lowWearPenalty = 1 - (item.wear_count / maxWears);
+  
+  const sameCat = items.filter(i => i.category === item.category).length;
+  const categoryRedundancy = sameCat / items.length;
+  
+  let highCPWPenalty = 0;
+  const itemsWithPrice = items.filter(i => getPrice(i) && i.wear_count > 0);
+  if (getPrice(item) && item.wear_count > 0 && itemsWithPrice.length > 1) {
+    const cpws = itemsWithPrice.map(i => getPrice(i) / i.wear_count);
+    const mean = cpws.reduce((s, x) => s + x, 0) / cpws.length;
+    const stdDev = Math.sqrt(cpws.reduce((s, x) => s + Math.pow(x - mean, 2), 0) / cpws.length);
+    if (stdDev > 0) {
+      const z = ((getPrice(item) / item.wear_count) - mean) / stdDev;
+      highCPWPenalty = Math.max(0, Math.min(1, z / 3));
+    }
+  }
+  
+  let recentWearBonus = 0;
+  if (item.last_worn && daysAgo(item.last_worn) <= 7) recentWearBonus = 0.30;
+  
+  const w1=0.35, w2=0.25, w3=0.15, w4=0.15, w5=0.30;
+  const score = (w1*stalenessPenalty + w2*lowWearPenalty + w3*categoryRedundancy + w4*highCPWPenalty - w5*recentWearBonus) * 100;
+  return Math.max(0, Math.min(100, Math.round(score)));
+}
+
+function refreshDonate() {
+  const wears = items.reduce((s,i) => s + i.wear_count, 0);
+  const donateView = document.getElementById('view-donate');
+  const candidatesEl = document.getElementById('donateCandidates');
+  const analysisEl = document.getElementById('wardrobeAnalysis');
+  const emptyEl = document.getElementById('noDonateState');
+
+  if (wears < 30) {
+    candidatesEl.innerHTML = '';
+    analysisEl.innerHTML = '';
+    emptyEl.style.display = 'block';
+    return;
+  }
+  emptyEl.style.display = 'none';
+
+  const candidates = items.map(i => {
+    const score = donationScore(i);
+    let reason = "";
+    const sScore = stalenessScore(i);
+    const sameCat = items.filter(x => x.category === i.category && x.id !== i.id).length;
+    
+    if (sScore >= 100) reason = "Not worn in " + daysAgo(i.last_worn) + " days. ";
+    if (sameCat > 0) reason += "You have " + sameCat + " other " + i.category + ". ";
+    if (getPrice(i) && i.wear_count > 0) {
+      const cpw = (getPrice(i) / i.wear_count).toFixed(2);
+      reason += "Costs a lot per use (" + formatPrice(i, cpw) + "/wear). ";
+    }
+    if (i.wear_count === 0) reason += "Never worn since added. ";
+
+    return { item: i, score, reason };
+  }).sort((a, b) => b.score - a.score).slice(0, 5).filter(x => x.score > 0);
+
+  candidatesEl.innerHTML = '<h3>Donation Tips</h3><p style="color:var(--text2);margin-bottom:20px">Based on how long they sit, how many you own, and cost per use.</p>' + 
+    candidates.map(c => `
+      <div class="donation-candidate">
+        <div class="d-header">
+          <div class="d-name">${c.item.name}</div>
+          <div class="d-score">${c.score}</div>
+        </div>
+        <div class="d-bar"><div class="d-fill" style="width:${c.score}%"></div></div>
+        <div class="d-reason">${c.reason}</div>
+        <button class="btn btn-ghost btn-sm" onclick="deleteItem(${c.item.id})">Mark as Donated</button>
+      </div>
+    `).join('');
+
+  // Wardrobe Analysis - Insight Carousel (all text 7-year-old level)
+  const total = items.length;
+  const categories = new Set(items.map(i => i.category)).size;
+  const regularWears = items.filter(i => !isDead(i)).length;
+  const regularPct = total > 0 ? Math.round((regularWears / total) * 100) : 0;
+  
+  const sortedByWear = [...items].sort((a,b) => b.wear_count - a.wear_count);
+  const top3 = sortedByWear.slice(0, 3);
+  const top3Wears = top3.reduce((s, i) => s + i.wear_count, 0);
+  const top3Pct = wears > 0 ? Math.round((top3Wears / wears) * 100) : 0;
+  
+  const strongCandidates = items.filter(i => donationScore(i) > 70);
+  const currentEntropy = calculateEntropy(items);
+  const improvedItems = items.filter(i => donationScore(i) <= 70);
+  const improvedEntropy = calculateEntropy(improvedItems);
+  const entropyDiff = improvedEntropy - currentEntropy;
+
+  const topCPW = items.filter(i => getPrice(i) && i.wear_count > 0).sort((a,b) => (getPrice(b)/b.wear_count)-(getPrice(a)/a.wear_count)).slice(0,3);
+  const neverWorn = items.filter(i => i.wear_count === 0).length;
+  const dailyAvg = items.length > 0 ? (wears / Math.max(1, (Date.now() - new Date(items.sort((a,b)=>a.id-b.id)[0].added_date).getTime()) / 86400000)).toFixed(1) : 0;
+
+  const insights = [
+    {
+      label: 'At A Glance',
+      body: 'You own <strong>' + total + '</strong> items across <strong>' + categories + '</strong> types.',
+      sub: 'You use <strong>' + regularPct + '%</strong> of what you own. ' + strongCandidates.length + ' item(s) are strong candidates to donate.',
+      vis: '<div class="progress-bar" style="margin-top:16px"><div class="fill alive-fill insight-bar-fill" style="width:' + regularPct + '%"></div></div><div style="font-size:0.72rem;color:var(--text3);margin-top:4px">Usage: ' + regularPct + '% active</div>'
+    },
+    {
+      label: 'Your Favorites',
+      body: 'Your top <strong>3</strong> clothes get <strong>' + top3Pct + '%</strong> of your wears.',
+      sub: (top3.length > 0 ? top3.map((i,idx) => (idx+1)+'. '+i.name + ' (' + i.wear_count + ' wears)').join('<br>') : 'Add more wears to see this.'),
+      vis: top3.length > 0 && wears > 0 ? '<div style="margin-top:14px">'+top3.map((i,idx) => {
+        const p = Math.round((i.wear_count/wears)*100);
+        return '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:0.72rem;width:16px;text-align:right;color:var(--text3)">'+(idx+1)+'</span><span style="font-size:0.78rem;width:70px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;text-align:left;text-transform:capitalize">'+i.name+'</span><div style="flex:1;height:8px;background:var(--surface2)"><div class="fill alive-fill insight-bar-fill" style="width:'+p+'%"></div></div><span style="font-size:0.7rem;color:var(--text2);min-width:30px">'+p+'%</span></div>';
+      }).join('')+'</div>' : ''
+    },
+    {
+      label: 'Do You Mix It Up?',
+      body: 'Your variety score is <strong>' + currentEntropy + '</strong> out of 100.',
+      sub: currentEntropy <= 30 ? 'You wear the same things a lot. Try switching it up.' : currentEntropy <= 60 ? 'Not bad. But you could mix in more items.' : currentEntropy <= 85 ? 'Nice! You mix things up well.' : 'Great! Almost everything gets worn.',
+      vis: '<div class="progress-bar" style="margin-top:16px"><div class="fill alive-fill insight-bar-fill" style="width:' + currentEntropy + '%"></div></div><div style="font-size:0.72rem;color:var(--text2);margin-top:4px">Variety: ' + currentEntropy + '/100</div>'
+    },
+    {
+      label: 'After Donating',
+      body: 'Donating <strong>' + strongCandidates.length + '</strong> items would boost your score from <strong>' + currentEntropy + '</strong> to <strong>' + improvedEntropy + '</strong>.',
+      sub: entropyDiff > 5 ? 'A big change. Think about it.' : entropyDiff > 0 ? 'A small change. Every bit counts.' : 'You\'re already balanced. Good job.',
+      vis: '<div style="display:flex;gap:16px;margin-top:16px"><div style="flex:1"><div style="font-size:0.65rem;color:var(--text3);margin-bottom:2px">NOW</div><div class="progress-bar"><div class="fill alive-fill insight-bar-fill" style="width:'+currentEntropy+'%"></div></div><div style="font-size:1rem;font-weight:700">'+currentEntropy+'</div></div><div style="flex:1"><div style="font-size:0.65rem;color:var(--text3);margin-bottom:2px">AFTER</div><div class="progress-bar"><div class="fill alive-fill insight-bar-fill" style="width:'+improvedEntropy+'%"></div></div><div style="font-size:1rem;font-weight:700">'+improvedEntropy+'</div></div></div>'
+    },
+    {
+      label: 'Price Per Use',
+      body: topCPW.length > 0 ? 'The item that costs the most per use is <strong>' + topCPW[0].name + '</strong> at ' + formatPrice(topCPW[0], (getPrice(topCPW[0])/topCPW[0].wear_count).toFixed(2)) + ' each time.' : 'Add prices to see which items cost the most per use.',
+      sub: topCPW.length > 1 ? topCPW.slice(1).map((i,idx)=>(idx+2)+'. '+i.name+': '+formatPrice(i, (getPrice(i)/i.wear_count).toFixed(2))+' per use').join('<br>') : '',
+      vis: ''
+    },
+    {
+      label: 'Never Used',
+      body: '<strong>' + neverWorn + '</strong> item(s) have never been worn.',
+      sub: neverWorn > 0 ? 'That is ' + neverWorn + ' thing(s) just sitting there. Tags still on?' : 'You\'ve used everything at least once. Nice!',
+      vis: neverWorn > 0 ? '<div class="progress-bar" style="margin-top:16px"><div class="fill alive-fill insight-bar-fill" style="width:' + Math.round((neverWorn/total)*100) + '%"></div></div><div style="font-size:0.72rem;color:var(--text2);margin-top:4px">' + Math.round((neverWorn/total)*100) + '% of your closet untouched</div>' : ''
+    },
+    {
+      label: 'Your Rhythm',
+      body: 'You mark about <strong>' + dailyAvg + '</strong> wears each day.',
+      sub: dailyAvg < 1 ? 'Less than once a day. Most people have 1-2 items they wear daily.' : dailyAvg < 2 ? 'About right for someone who knows what they like.' : 'You mark a lot. You either change often or share items.',
+      vis: ''
+    }
+  ];
+
+  let carouselHtml = '<div class="insight-carousel" id="insightCarousel">';
+  insights.forEach((ins, idx) => {
+    carouselHtml += '<div class="insight-card' + (idx === 0 ? ' active' : '') + '" data-index="' + idx + '">';
+    carouselHtml += '<div class="insight-label">' + ins.label + '</div>';
+    carouselHtml += '<div class="insight-body">' + ins.body + '</div>';
+    if (ins.vis) carouselHtml += ins.vis;
+    carouselHtml += '<div class="insight-sub">' + ins.sub + '</div>';
+    carouselHtml += '</div>';
+  });
+  carouselHtml += '<div class="carousel-nav"><button onclick="moveCarousel(-1)" title="Previous insight">&larr;</button>';
+  carouselHtml += '<button onclick="moveCarousel(1)" title="Next insight">&rarr;</button></div>';
+  carouselHtml += '<div class="insight-dots">';
+  insights.forEach((_, idx) => {
+    carouselHtml += '<span class="insight-dot' + (idx === 0 ? ' active' : '') + '" onclick="goCarousel(' + idx + ')" title="Go to insight ' + (idx+1) + '"></span>';
+  });
+  carouselHtml += '</div></div>';
+
+  analysisEl.innerHTML = '<h3>Your Closet At A Glance</h3>' + carouselHtml;
+  window._carouselIndex = 0;
+  window._carouselTotal = insights.length;
+}
+
+function calculateEntropy(itemList) {
+  const wears = itemList.reduce((s, i) => s + i.wear_count, 0);
+  const wornItems = itemList.filter(i => i.wear_count > 0);
+  if (wears === 0 || wornItems.length === 0) return 0;
+  const h = -wornItems.reduce((s, i) => {
+    const p = i.wear_count / wears;
+    return s + (p * Math.log(p));
+  }, 0);
+  const maxH = Math.log(wornItems.length);
+  return maxH > 0 ? Math.round((h / maxH) * 100) : 0;
+}
+
+function moveCarousel(dir) {
+  const idx = (window._carouselIndex || 0) + dir;
+  goCarousel(idx);
+}
+function goCarousel(idx) {
+  const total = window._carouselTotal || 1;
+  idx = ((idx % total) + total) % total;
+  window._carouselIndex = idx;
+  document.querySelectorAll('#insightCarousel .insight-card').forEach((c, i) => {
+    c.classList.toggle('active', i === idx);
+  });
+  document.querySelectorAll('#insightCarousel .insight-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === idx);
+  });
+}
+function refreshAll() { load(); document.getElementById('deadDays').value = DEAD_DAYS; refreshHeader(); refreshWardrobe(); refreshDead(); refreshHistory(); refreshStats(); refreshDonate(); checkBackupReminder(); }
+
+/* Demo data */
+function loadDemo() {
+  if (items.length > 0) {
+    if (!confirm('Loading demo will replace your current data. Continue?')) return;
+  }
+  const now = Date.now();
+  const demo = [
+    {id: now-14, name:'white t-shirt', category:'tops', color:'white', note:'H&M, size M', price: '৳800', added_date:'2026-01-15', last_worn:today(), wear_count:47},
+    {id: now-13, name:'blue jeans', category:'bottoms', color:'blue', note:'Levi 511', price: '৳4000', added_date:'2026-01-15', last_worn:today(), wear_count:52},
+    {id: now-12, name:'black hoodie', category:'outerwear', color:'black', note:'Uniqlo', price: '৳2500', added_date:'2026-01-20', last_worn:'2026-05-25', wear_count:23},
+    {id: now-11, name:'grey sweater', category:'outerwear', color:'grey', note:'Gift from mom', price: '৳1800', added_date:'2025-11-01', last_worn:'2026-02-10', wear_count:3},
+    {id: now-10, name:'white sneakers', category:'shoes', color:'white', note:'Nike Air Force 1', price: '৳6000', added_date:'2026-02-01', last_worn:today(), wear_count:38},
+    {id: now-9, name:'black belt', category:'accessories', color:'black', note:'', price: '৳800', added_date:'2026-01-10', last_worn:'2026-05-28', wear_count:31},
+    {id: now-8, name:'navy blazer', category:'formal', color:'navy', note:'Bought for wedding, worn once', price: '৳8000', added_date:'2025-06-15', last_worn:'2025-07-20', wear_count:1},
+    {id: now-7, name:'red scarf', category:'accessories', color:'red', note:'Christmas gift', price: '৳600', added_date:'2025-12-25', last_worn:null, wear_count:0},
+    {id: now-6, name:'beige chinos', category:'bottoms', color:'beige', note:'Zara', price: '৳2500', added_date:'2026-03-10', last_worn:'2026-05-27', wear_count:12},
+    {id: now-5, name:'brown boots', category:'shoes', color:'brown', note:'Dr Martens', price: '৳8000', added_date:'2025-10-01', last_worn:'2026-05-20', wear_count:18},
+    {id: now-4, name:'green polo', category:'tops', color:'green', note:'', price: '৳1200', added_date:'2026-04-01', last_worn:'2026-04-15', wear_count:4},
+    {id: now-3, name:'black formal shoes', category:'formal', color:'black', note:'Bata', price: '৳3500', added_date:'2024-08-01', last_worn:'2025-08-10', wear_count:2},
+    {id: now-2, name:'yellow rain jacket', category:'outerwear', color:'yellow', note:'North Face', price: '৳3000', added_date:'2025-07-01', last_worn:null, wear_count:0},
+    {id: now-1, name:'purple tie', category:'accessories', color:'purple', note:'', price: '৳400', added_date:'2025-05-01', last_worn:null, wear_count:0},
+  ];
+  items = demo;
+  wearLog = [];
+  demo.forEach(demoItem => {
+    if (demoItem.last_worn && demoItem.last_worn !== today()) {
+      for (let i = 0; i < demoItem.wear_count; i++) {
+        const daysBack = Math.floor(Math.random() * 30) + (demoItem.wear_count > 10 ? 1 : 60);
+        const dateObj = new Date(); dateObj.setDate(dateObj.getDate() - daysBack);
+        wearLog.push({ item_id: demoItem.id, item_name: demoItem.name, worn_date: dateObj.toISOString().split('T')[0] });
+      }
+    }
+  });
+  lastWearUndo = null;
+  save(); toast('Loaded 14 demo items. Explore around!'); refreshAll();
+}
+
+/* Dark mode */
+function toggleDark() {
+  const d = document.body.classList.toggle('dark');
+  const btn = document.getElementById('darkToggle');
+  btn.textContent = d ? 'Light' : 'Dark';
+  try { localStorage.setItem('closetgc_dark', d ? '1' : '0'); } catch(e) {}
+}
+
+/* Navigation & Interaction */
+function scrollToTool(action) {
+  const toolSection = document.getElementById('tool');
+  toolSection.scrollIntoView({ behavior: 'smooth' });
+  
+  if (action === 'demo') {
+    loadDemo();
+    document.getElementById('welcomePanel').classList.remove('show');
+  } else if (action === 'fresh') {
+    document.getElementById('welcomePanel').classList.remove('show');
+  }
+}
+
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', function() {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById('view-' + this.dataset.tab).classList.add('active');
+  });
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.activeElement === document.getElementById('itemName')) addItem();
+  if (e.key === 'Escape') { document.getElementById('searchInput').value = ''; refreshWardrobe(); }
+});
+
+/* Animations */
+const animateObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('fade-in'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.card').forEach(el => animateObserver.observe(el));
+document.querySelectorAll('.stat-card').forEach(el => animateObserver.observe(el));
+
+// Stagger item cards when they appear
+function staggerCards() {
+  document.querySelectorAll('#wardrobeGrid .item-card, #deadGrid .item-card').forEach((el, i) => {
+    el.classList.remove('revealed');
+    setTimeout(() => el.classList.add('revealed'), i * 40);
+  });
+}
+const _origRefreshWardrobe = refreshWardrobe;
+refreshWardrobe = function() { _origRefreshWardrobe(); setTimeout(staggerCards, 30); };
+
+// Count-up animation for stat numbers
+function animateCount(el, from, to, suffix) {
+  if (from === to) return;
+  suffix = suffix || '';
+  const dur = 500, start = performance.now();
+  function tick(now) {
+    const p = Math.min((now - start) / dur, 1);
+    el.textContent = Math.round(from + (to - from) * p) + suffix;
+    if (p < 1) requestAnimationFrame(tick);
+    else { el.textContent = to + suffix; el.classList.add('counted'); setTimeout(() => el.classList.remove('counted'), 400); }
+  }
+  requestAnimationFrame(tick);
+}
+
+/* Init */
+load();
+try { if (localStorage.getItem('closetgc_dark') === '1') { document.body.classList.add('dark'); document.getElementById('darkToggle').textContent = 'Light'; } } catch(e) {}
+document.getElementById('deadDays').value = DEAD_DAYS;
+refreshAll();
+</script>
+</body>
+</html>
